@@ -1,0 +1,22 @@
+- hosts: web01
+  become: yes
+  remote_user: ubuntu
+  pre_tasks:
+        - name: "update cache"
+          apt:
+                  update_cache: yes
+        - name: "Java package should be installed"
+          apt:
+                  name: openjdk-11-jdk
+                  state: present
+        - name: "Python should be installed"
+          apt:
+                  name: python3
+                  state: present
+        - name: "Maven should be installed"
+          apt:
+                  name: maven
+                  state: present
+  roles:
+        - role: geerlingguy.jenkins
+        - role: geerlingguy.docker
