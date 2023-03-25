@@ -1,0 +1,9 @@
+- hosts: localhost
+  become: yes
+  remote_user: ubuntu
+  roles:
+          - role: geerlingguy.jenkins
+  pre_tasks:
+        - name: "update cache"
+          apt:
+                  update_cache: yes
