@@ -2,7 +2,7 @@
   become: yes
   remote_user: ubuntu
   roles:
-          - role: geerlingguy.jenkins
+          - role: geerlingguy.docker
   pre_tasks:
         - name: "update cache"
           apt:
