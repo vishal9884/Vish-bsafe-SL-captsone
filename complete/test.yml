@@ -1,9 +1,0 @@
-- hosts: localhost
-  become: yes
-  remote_user: ubuntu
-  roles:
-          - role: geerlingguy.docker
-  pre_tasks:
-        - name: "update cache"
-          apt:
-                  update_cache: yes
