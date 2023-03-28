@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    tools{
+        maven 'maven'
+    }
+    stages{
+        stage('Build Maven'){
+            steps{
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vishal9884/Vish-bsafe-SL-captsone']]])
+                sh 'sh mvnw package -DskipTests'
+            }
+        }
+        stage('Build docker image'){
+            steps{
+                script{
+                    sh 'docker build -t vishal9884/devops-integration .'
+                }
+            }
+        }
+        stage('Push image to Hub'){
+            steps{
+                script{
+                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                   sh 'docker login -u vishal9885 -p ${dockerhubpwd}'
+                   }
+                   sh 'docker push vishal9884/devops-integration'
+                }
+            }
+        }
+        stage('Deploy Image on container'){
+            steps{
+                script{
+                    sh 'docker run -d -p 5555:8080 vishal9884/devops-integration:latest'
+                }
+            }    
+        }
+    }
+}
